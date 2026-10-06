@@ -6,7 +6,7 @@ const app=express();
 app.use(express.json({limit:"100kb"}));
 const port=process.env.PORT||10000;
 const pool=process.env.DATABASE_URL?new Pool({connectionString:process.env.DATABASE_URL,ssl:{rejectUnauthorized:false}}):null;
-const DEFAULT_STATE={companyName:"Hex Company",companyValue:1000,weeklyPool:0,totalShares:1000,owners:[{name:"Hex Company",investment:990},{name:"Walter",investment:10}]};
+const DEFAULT_STATE={companyName:"Hex Company",companyValue:1000,totalShares:1000,owners:[{name:"Hex Company",investment:990},{name:"Walter",investment:10}]};
 
 async function initDb(){
   if(!pool)return;
@@ -26,10 +26,9 @@ async function setState(data){
 function cleanState(input){
   if(!input||typeof input!=="object")throw new Error("Invalid state");
   const companyValue=Math.max(0,Number(input.companyValue)||0);
-  const weeklyPool=Math.max(0,Number(input.weeklyPool)||0);
   const totalShares=Math.max(1,Number(input.totalShares)||1);
   const owners=Array.isArray(input.owners)?input.owners.slice(0,100).map(o=>({name:String(o?.name||"Unnamed").slice(0,80),investment:Math.max(0,Number(o?.investment)||0)})):[];
-  return {companyName:String(input.companyName||"Hex Company").slice(0,100),companyValue,weeklyPool,totalShares,owners};
+  return {companyName:String(input.companyName||"Hex Company").slice(0,100),companyValue,totalShares,owners};
 }
 app.get("/api/health",(req,res)=>res.json({ok:true,database:!!pool}));
 app.get("/api/state",async(req,res)=>{try{res.json(await getState())}catch(e){console.error(e);res.status(500).json({error:"Could not load saved data"})}});
