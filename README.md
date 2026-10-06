@@ -9,9 +9,10 @@ A simple private-company ownership dashboard with server-side saving.
 - Calculate ownership as investment / company value × 100.
 - Example: ฿1 invested in a ฿1,000 company = 0.1%.
 - Show ownership in a pie chart.
-- Set a weekly payout pool and calculate each owner's weekly payout.
+- Calculate each owner's weekly payout from company value.
 - Save data through the server API.
 - Store the data in Render Postgres when DATABASE_URL is configured.
+- Weekly payout formula: company value × ownership %. Example: 1% of ฿1,000 = ฿10 per week.
 
 ## Render setup
 
@@ -34,7 +35,7 @@ The app has four simple areas:
 - Dashboard — company value, total investment, ownership chart, and payout summary.
 - Owners — edit investors and investments.
 - Payouts — see the weekly amount for each owner.
-- Settings — edit company value, weekly payout pool, and share count.
+- Settings — edit company value, weekly company value, and share count.
 
 ## Note
 
