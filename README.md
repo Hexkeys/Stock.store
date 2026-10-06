@@ -7,6 +7,7 @@ A simple private-company ownership dashboard with server-side saving.
 - Edit company value.
 - Add, edit, and remove owners.
 - Calculate ownership as investment / company value × 100.
+- Example: at ฿1,000 company value, ฿1 buys 0.1% ownership, ฿10 buys 1%, and ฿100 buys 10%.
 - Example: ฿1 invested in a ฿1,000 company = 0.1%.
 - Show ownership in a pie chart.
 - Show a stock-style company valuation chart with 1D, 1W, 1M, 3M, 6M, 1Y, and ALL ranges.
