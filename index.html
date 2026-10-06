@@ -42,7 +42,7 @@
 <section id="settings" class="page">
 <div class="hero"><div><p class="eyebrow">Configuration</p><h1>Settings</h1><p class="sub">Edit the company details and calculation rules.</p></div><button class="btn danger" id="reset">Reset example</button></div>
 <div class="card panel"><div class="form">
-<label>Company name<input id="companyName"></label><label>Company value (฿)<input id="companyValue" type="number" min="0"></label><label>Weekly payout based on company value (฿)<input id="weeklyPool" type="number" min="0" step=".01"></label><label>Shares available<input id="totalShares" type="number" min="1"></label>
+<label>Company name<input id="companyName"></label><label>Company value (฿)<input id="companyValue" type="number" min="0"></label><label>Shares available<input id="totalShares" type="number" min="1"></label>
 </div><div class="formula"><b>Ownership formula</b><span>investment ÷ company value × 100</span><span>Example: ฿1 invested in a ฿1,000 company = <b>0.1%</b></span></div></div>
 <div class="card panel"><div class="head"><div><h2>Server storage</h2><p>Your edits are sent to the app server.</p></div></div><div class="callout">Render is configured to give the app a PostgreSQL database through <b>DATABASE_URL</b>. Your ownership data is saved there instead of only in your browser.</div></div>
 </section>
