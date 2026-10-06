@@ -1,14 +1,41 @@
 # Stock.store
 
-Private-company ownership and weekly payout dashboard.
+A simple private-company ownership dashboard with server-side saving.
 
-- Edit company value and payout pool.
-- Add/edit/remove owners.
-- Ownership is calculated as investment / company value × 100.
-- Example: ฿1 in a ฿1,000 company = 0.1%.
-- Pie chart shows the ownership split.
-- Weekly payout preview calculates each owner's share of the payout pool.
-- Data is stored in browser localStorage.
-- Includes Render static-site configuration.
+## What it does
 
-This is a tracker/calculator, not a payment processor or legal securities system.
+- Edit company value.
+- Add, edit, and remove owners.
+- Calculate ownership as investment / company value × 100.
+- Example: ฿1 invested in a ฿1,000 company = 0.1%.
+- Show ownership in a pie chart.
+- Set a weekly payout pool and calculate each owner's weekly payout.
+- Save data through the server API.
+- Store the data in Render Postgres when DATABASE_URL is configured.
+
+## Render setup
+
+This repository is now a **Node Web Service**, not a Static Site.
+
+Use:
+
+- Branch: `main`
+- Root Directory: leave blank
+- Runtime: `Node`
+- Build Command: `npm install`
+- Start Command: `npm start`
+
+The included `render.yaml` defines the web service and a Postgres database and connects the service to the database with `DATABASE_URL`. Render supports these Node build/start commands and Blueprint database environment-variable wiring. 
+
+## Navigation
+
+The app has four simple areas:
+
+- Dashboard — company value, total investment, ownership chart, and payout summary.
+- Owners — edit investors and investments.
+- Payouts — see the weekly amount for each owner.
+- Settings — edit company value, weekly payout pool, and share count.
+
+## Note
+
+The app calculates and stores ownership/payout information but does not transfer money or issue legal securities. Add authentication and proper legal/accounting controls before using it with real investors or real payments.
