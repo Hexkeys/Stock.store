@@ -35,5 +35,5 @@ app.get("/api/health",(req,res)=>res.json({ok:true,database:!!pool}));
 app.get("/api/state",async(req,res)=>{try{res.json(await getState())}catch(e){console.error(e);res.status(500).json({error:"Could not load saved data"})}});
 app.put("/api/state",async(req,res)=>{try{const data=cleanState(req.body);await setState(data);res.json(data)}catch(e){console.error(e);res.status(400).json({error:e.message})}});
 app.use(express.static(__dirname));
-app.get("*",(req,res)=>res.sendFile(path.join(__dirname,"index.html")));
+app.get(/.*/,(req,res)=>res.sendFile(path.join(__dirname,"index.html")));
 initDb().then(()=>app.listen(port,"0.0.0.0",()=>console.log("Stock.store running on "+port))).catch(e=>{console.error(e);process.exit(1)});
