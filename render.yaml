@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: stock-store
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .
