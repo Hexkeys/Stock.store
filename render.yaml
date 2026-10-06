@@ -1,6 +1,17 @@
 services:
   - type: web
     name: stock-store
-    runtime: static
-    buildCommand: ""
-    staticPublishPath: .
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: stock-store-db
+          property: connectionString
+
+databases:
+  - name: stock-store-db
+    plan: free
+    databaseName: stock_store
