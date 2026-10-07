@@ -8,6 +8,7 @@ const port=process.env.PORT||10000;
 const pool=process.env.DATABASE_URL?new Pool({connectionString:process.env.DATABASE_URL,ssl:{rejectUnauthorized:false}}):null;
 
 const now=()=>new Date().toISOString();
+const isProduction=process.env.NODE_ENV==="production";
 const makeId=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
 
 const DEFAULT_STATE={
@@ -66,7 +67,7 @@ async function initDb(){
 }
 
 async function getState(){
-  if(!pool)return migrate(DEFAULT_STATE);
+  if(!pool){if(isProduction)throw new Error("DATABASE_URL is not configured");return migrate(DEFAULT_STATE);}
   const {rows}=await pool.query("SELECT data FROM app_state WHERE id=1");
   const data=migrate(rows[0]?.data||DEFAULT_STATE);
   return data;
@@ -74,7 +75,8 @@ async function getState(){
 
 async function saveState(data){
   const migrated=migrate(data);
-  if(!pool)return migrated;
+  migrated.updatedAt=now();
+  if(!pool){if(isProduction)throw new Error("DATABASE_URL is not configured");return migrated;}
   await pool.query(
     "INSERT INTO app_state (id,data,updated_at) VALUES (1,$1::jsonb,NOW()) ON CONFLICT(id) DO UPDATE SET data=EXCLUDED.data,updated_at=NOW()",
     [JSON.stringify(migrated)]
@@ -134,14 +136,14 @@ function clean(input,current){
 app.get("/api/health",(req,res)=>res.json({ok:true,database:!!pool}));
 app.get("/api/state",async(req,res)=>{
   try{res.json(await getState())}
-  catch(e){console.error(e);res.status(500).json({error:"Could not load saved data"})}
+  catch(e){console.error(e);res.status(503).json({error:"Database is not connected"})}
 });
 app.put("/api/state",async(req,res)=>{
   try{
     const current=await getState();
     const data=clean(req.body,current);
     res.json(await saveState(data));
-  }catch(e){console.error(e);res.status(400).json({error:e.message})}
+  }catch(e){console.error(e);res.status(e.message==="DATABASE_URL is not configured"?503:400).json({error:e.message})}
 });
 app.post("/api/history",async(req,res)=>{
   try{
@@ -154,7 +156,7 @@ app.use(express.static(__dirname));
 app.get("/api/state/beacon",(_,res)=>res.status(405).end());
 app.post("/api/state/beacon",async(req,res)=>{
   try{const current=await getState();const data=clean(req.body,current);await saveState(data);res.status(204).end()}
-  catch(e){console.error(e);res.status(400).end()}
+  catch(e){console.error(e);res.status(503).end()}
 });
 app.get(/.*/,(req,res)=>res.sendFile(path.join(__dirname,"index.html")));
 
