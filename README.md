@@ -6,14 +6,15 @@ A simple private-company ownership dashboard with server-side saving.
 
 - Edit company value.
 - Add, edit, and remove owners.
-- Calculate ownership as investment / company value × 100.
-- Example: at ฿1,000 company value, ฿1 buys 0.1% ownership, ฿10 buys 1%, and ฿100 buys 10%.
+- At the moment an owner invests, calculate ownership as investment ÷ company value × 100 and lock that percentage.
+- Example: Bob invests ฿20 when the company is worth ฿100 → Bob owns 20%. If the company later becomes worth ฿1,000, Bob still owns 20%.
+- Each owner record stores their initial investment, investment-time company value, and timestamp.
 - Example: ฿1 invested in a ฿1,000 company = 0.1%.
 - Show ownership in a pie chart.
 - Show a stock-style company valuation chart with 1D, 1W, 1M, 3M, 6M, 1Y, and ALL ranges.
 - Hover/touch the valuation chart to inspect a recorded value and timestamp.
 - Record valuation points manually, or let value changes automatically add chart history.
-- Calculate each owner's weekly payout from company value.
+- Calculate each owner's weekly payout from the current company value using their locked ownership percentage.
 - Save data through the server API.
 - Store the data in Render Postgres when DATABASE_URL is configured.
 - Weekly payout formula: company value × ownership %. Example: 1% of ฿1,000 = ฿10 per week.
