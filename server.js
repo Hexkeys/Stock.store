@@ -86,6 +86,7 @@ app.get("/api/state",async(req,res)=>{
   try{res.json(await getState())}
   catch(e){console.error(e);res.status(500).json({error:"Could not load saved data"})}
 });
+app.post("/api/state/beacon",async(req,res)=>{try{const current=await getState();const data=clean(req.body,current);await saveState(data);res.status(204).end()}catch(e){console.error(e);res.status(400).end()}});
 app.put("/api/state",async(req,res)=>{
   try{
     const current=await getState();
