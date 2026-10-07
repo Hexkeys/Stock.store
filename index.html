@@ -62,7 +62,7 @@
 </main>
 
 <script>
-const EX={companyName:"Hex Company",companyValue:1000,totalShares:1000,owners:[{name:"Hex Company",investment:990},{name:"Walter",investment:10}],history:[{ts:new Date().toISOString(),value:1000}]};
+const EX={companyName:"Hex Company",companyValue:1000,totalShares:1000,owners:[{id:"hex",name:"Hex Company",investment:990,ownershipPct:99,investedAt:new Date().toISOString(),investmentCompanyValue:1000},{id:"walter",name:"Walter",investment:10,ownershipPct:1,investedAt:new Date().toISOString(),investmentCompanyValue:1000}],history:[{ts:new Date().toISOString(),value:1000}]};
 let state=EX,saveChain=Promise.resolve(),currentDays=30,hoverIndex=null,plotPoints=[];
 const $=id=>document.getElementById(id);
 const colors=["#5b5cf0","#7c3aed","#0891b2","#16a34a","#f59e0b","#ef4444","#ec4899","#64748b"];
@@ -107,6 +107,7 @@ $("add").onclick=function(){state.owners.push({name:"New owner",investment:0});r
 $("reset").onclick=function(){state=JSON.parse(JSON.stringify(EX));render();save()}
 window.addEventListener("resize",function(){renderStockChart()});
 load();
+window.addEventListener("pagehide",saveBeforeExit);document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")saveBeforeExit()});
 </script>
 </body>
 </html>
